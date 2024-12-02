@@ -25,7 +25,19 @@ public class CrawlerTest {
         //assertFalse(crawler.isValidUrl(null), "Null URL should return false.");
     }
 
+    @Test
+    public void testLinkExtraction() throws Exception {
+        // Arrange
+        String html = "<html><body><a href='https://example.com'>Example</a></body></html>";
 
+        // Act
+        Elements links = Jsoup.parse(html).select("a[href]");
+
+        // Assert
+        assertEquals(1, links.size(), "There should be exactly one link in the HTML.");
+        Element link = links.first();
+        assertEquals("https://example.com", link.absUrl("href"), "Extracted URL should match the expected value.");
+    }
 
     @Test
     public void testCrawlMethod() {
