@@ -26,3 +26,28 @@ public class CustomGraphDatabase implements AutoCloseable {
             logger.error("Failed to save page {}: {}", url, e.getMessage());
         }
     }
+
+
+public void saveLink(String fromUrl, String toUrl) {
+        try (Session session = driver.session()) {
+            logger.debug("Saving link: From={}, To={}", fromUrl, toUrl);
+            session.writeTransaction(tx -> {
+                tx.run("MATCH (from:Page {url: $fromUrl}) " +
+                                "MERGE (to:Page {url: $toUrl}) " +
+                                "MERGE (from)-[:LINKS_TO]->(to)",
+                        Values.parameters("fromUrl", fromUrl, "toUrl", toUrl));
+                return null;
+            });
+            logger.info("Link saved successfully: From={}, To={}", fromUrl, toUrl);
+        } catch (Exception e) {
+            logger.error("Failed to save link From={} To={}: {}", fromUrl, toUrl, e.getMessage());
+        }
+    }
+
+    @Override
+    public void close() {
+        logger.info("Closing connection to Neo4j database.");
+        driver.close();
+    }
+}
+
