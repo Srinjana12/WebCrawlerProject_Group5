@@ -113,6 +113,27 @@ public class Crawler {
             logger.error("Error writing to CSV file: {}", e.getMessage());
         }
     }
+    
+    protected boolean isValidUrl(String url) {
+        if (url == null || url.isEmpty()) {
+            logger.debug("Invalid URL: null or empty");
+            return false;
+        }
+        boolean valid = url.startsWith("http://") || url.startsWith("https://");
+        if (!valid) {
+            logger.debug("Invalid URL format: {}", url);
+        }
+        return valid;
+    }
 
+    private static class UrlDepthPair {
+        String url;
+        int depth;
+
+        UrlDepthPair(String url, int depth) {
+            this.url = url;
+            this.depth = depth;
+        }
+    }
     
 }
