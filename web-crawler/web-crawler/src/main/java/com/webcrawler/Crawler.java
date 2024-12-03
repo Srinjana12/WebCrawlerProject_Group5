@@ -103,7 +103,7 @@ public class Crawler {
 
             logger.info("Crawling completed for start URL: {}", startUrl);
             logger.info("Total pages crawled: {}", pageCount);
-            logger.info("Crawling speed: {} pages/second", pagesPerSecond);
+            logger.info("Pages crawled per second: {}", String.format("%.2f", pagesPerSecond));
 
             // Write final statistics to CSV
             csvWriter.append(String.format("\nTotal Pages Crawled,%d\n", pageCount));
